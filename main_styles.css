@@ -21,6 +21,7 @@
     font-size : 4rem;
     font-weight : bold;
     color : white;
+    text-align: right;
 }
 
 .calculator-body{
@@ -56,8 +57,18 @@
 
 .calculator-body .equal-sign{
     background-color: #2cb978;
+    color : white;
+}
+
+.calculator-body .equal-sign:hover{
+    background-color: #17965b;
 }
 
 .calculator-body .clear{
     background-color: #f26d5b;
+    color : white;
+}
+
+.calculator-body .clear:hover{
+    background-color: #b64030;
 }

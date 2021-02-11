@@ -31,7 +31,7 @@
     padding : 15px 0px;
     display : grid;
     grid-template-columns: repeat(4,1fr);
-    grid-template-rows:repeat(4 , 100px);
+    grid-template-rows:repeat(4 , 70px);
     grid-gap : 25px;
 }
 
@@ -74,4 +74,30 @@
 
 .calculator-body .clear:hover{
     background-color: #b64030;
+}
+
+/**Media queries**/
+
+@media only screen and (min-width : 600px){
+    .calculator{
+        width : 80%;
+    }
+}
+
+@media only screen and (min-width : 768px){
+    .calculator{
+        width : 70%;
+    }
+}
+
+@media only screen and (min-width : 992px){
+    .calculator{
+        width : 60%;
+    }
+}
+
+@media only screen and (min-width : 1200px){
+    .calculator{
+        width : 50%;
+    }
 }

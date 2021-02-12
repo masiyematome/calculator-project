@@ -1,25 +1,32 @@
-//Selectors
 
-const numbersOnScreenInput = document.querySelector(".numbers-on-screen-input");
-const calculatorBody = document.querySelector(".calculator-body");
-const allButtons = document.querySelectorAll("button");
 
-//Event Listeners
+const numbersOnScreen = document.querySelector(".numbers-on-screen-input");
+const calculatorKeys = document.querySelector(".calculator-keys");
 
-calculatorBody.addEventListener("click",sendToScreen);
+calculatorKeys.addEventListener("click" , event => {
+    if(event.target.matches("button")){
+        
+        const key = event.target;
+        const keyAction = key.dataset.action;
 
-//Functions
+        if(!(keyAction)){
+            console.log("Number key");
+        }
 
-function sendToScreen(ev){
-    const clickedButton = ev.target;
+        else if(keyAction == "add" || keyAction == "divide" || keyAction == "multiply" || keyAction == "subtract"){
+            console.log("Operator Key");
+        }
 
-    allButtons.forEach(button => {
-        numbersOnScreenInput.value = clickedButton.innerText;
-    })
-    
+        else if(keyAction == "decimal"){
+            console.log("Decimal key");
+        }
 
-    if(clickedButton.classList.contains("clear")){
-        numbersOnScreenInput.value = "0";
+        else if(keyAction == "clear"){
+            console.log("Clear key");
+        }
+
+        else {
+            console.log("Equal key");
+        }
     }
-
-}
+})

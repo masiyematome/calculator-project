@@ -27,7 +27,7 @@
 }
 
 
-.calculator-body{
+.calculator-keys{
     padding : 15px 0px;
     display : grid;
     grid-template-columns: repeat(4,1fr);
@@ -35,7 +35,7 @@
     grid-gap : 25px;
 }
 
-.calculator-body button { 
+.calculator-keys button { 
     outline : none;
     font-size : 2rem;
     font-weight : bold;
@@ -45,34 +45,36 @@
     transition: all ease 1s;
 }
 
-.calculator-body button:hover{
+.calculator-keys button:hover{
     background-color : gray;
 }
 
-.calculator-body .operator{
+.calculator-keys .operator{
     background-color : #feb062;
     color : white;
 }
 
-.calculator-body .operator:hover{
+.calculator-keys .operator:hover{
     background-color : #b97128;
 }
 
-.calculator-body .equal-sign{
+
+
+.calculator-keys .equal-sign{
     background-color: #2cb978;
     color : white;
 }
 
-.calculator-body .equal-sign:hover{
+.calculator-keys .equal-sign:hover{
     background-color: #17965b;
 }
 
-.calculator-body .clear{
+.calculator-keys .clear{
     background-color: #f26d5b;
     color : white;
 }
 
-.calculator-body .clear:hover{
+.calculator-keys .clear:hover{
     background-color: #b64030;
 }
 

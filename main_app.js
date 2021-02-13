@@ -15,6 +15,10 @@ calculatorKeys.addEventListener("click", event => {
             if(displayedNumber == 0){
                 calculatorScreen.textContent = keyContent;
             }
+
+            else {
+                calculatorScreen.textContent = displayedNumber + keyContent;
+            }
         }
 
         else if (keyAction == "add" || keyAction == "divide" || keyAction == "multiply" || keyAction == "subtract") {

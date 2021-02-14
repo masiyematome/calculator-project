@@ -69,7 +69,11 @@
 }
 
 .calculator-keys .clear:hover{
-    background-color: #b64030;
+    background-color: #c4bcbb;
+}
+
+.operator.is-depressed {
+    background-color : #b97128;
 }
 
 /**Media queries**/

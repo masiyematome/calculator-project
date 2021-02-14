@@ -7,13 +7,14 @@ calculatorKeys.addEventListener("click", (event) => {
         const key = event.target;
         const keyAction = key.dataset.action;
         const keyContent = key.innerText;
+        const previousKeyType = calculatorScreen.dataset.previousKeyType;
 
         Array.from(key.parentElement.children).forEach(individualKey => {
             individualKey.classList.remove("is-depressed");
         })
 
         if(!keyAction){
-            if(calculatorScreen.innerText == 0){
+            if(calculatorScreen.innerText == 0 || previousKeyType == "operator"){
                 calculatorScreen.innerText = keyContent;
             }
 
@@ -23,7 +24,10 @@ calculatorKeys.addEventListener("click", (event) => {
         }
 
         else if(keyAction == "add" || keyAction == "subtract" || keyAction == "divide" || keyAction == "multiply"){
+
             key.classList.add("is-depressed");
+
+            calculatorScreen.dataset.previousKeyType = 'operator';
             
         }
 

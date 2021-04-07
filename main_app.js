@@ -1,63 +1,69 @@
-const calculatorkeys = document.querySelector(".calculator-keys");
 
 const calculator = {
-    valueOnScreen: '0',
-    firstOperand: null,
-    waitingForSecondOperand: false,
-    operator: null,
+    valueOnScreen : '0',
+    firstOperand : null,
+    waitingForSecondOperand : false,
+    operator : null,
 }
 
-function updateDisplay() {
+function updateScreenDisplay(){
     const calculatorScreen = document.querySelector(".calculator-screen");
     calculatorScreen.value = calculator.valueOnScreen;
 }
 
-updateDisplay();
+updateScreenDisplay();
 
-function appendDigit(digit) {
-    if (calculator.valueOnScreen == '0') {
+function appendDigit(digit){
+    if(calculator.valueOnScreen == '0'){
         calculator.valueOnScreen = digit;
     }
 
-    else {
+    else{
         calculator.valueOnScreen = calculator.valueOnScreen + digit;
     }
 }
 
-
-calculatorkeys.addEventListener("click", (event) => {
-    const { target } = event;
-
-    if (!(target.matches("button"))) {
+function appendDot(dot){
+    if(calculator.valueOnScreen.includes(dot)){
         return;
     }
 
-    else {
-        if (target.classList.contains("operator")) {
-            console.log('I am an operator', target.value);
-        }
-
-        else if (target.classList.contains("decimal")) {
-            console.log("I am a decimal key", target.value);
-        }
-
-        else if (target.classList.contains("equal-sign")) {
-            console.log("I am an equal key", target.value);
-        }
-
-        else if (target.classList.contains("clear")) {
-            console.log("I will clear this thing broer", target.value);
-        }
-
-        else {
-            console.log("I am a decimal key");
-        }
-
-        appendDigit(target.value);
-        updateDisplay();
-        
+    else{
+        calculator.valueOnScreen = calculator.valueOnScreen + dot;
     }
-})
+}
 
-/**Playing around with code**/
+const calculatorKeys = document.querySelector(".calculator-keys").addEventListener("click" , (event) =>{
+    const {target} = event;
+
+    if(!(target.matches("button"))){
+        return;
+    }
+
+    else{
+        if(target.classList.contains("operator")){
+            console.log("I am an operator key" ,target.value);
+        }
+    
+        else if(target.classList.contains("decimal")){
+            appendDot(target.value);
+        }
+    
+        else if(target.classList.contains("equal-sign")){
+            console.log("I am an equal sign" ,target.value);
+        }
+    
+        else if(target.classList.contains("clear")){
+            console.log("I am a clear key" , target.value);
+        }
+    
+        else {
+            appendDigit(target.value);
+        }
+
+        updateScreenDisplay();
+
+    }
+
+})
 

@@ -1,5 +1,4 @@
 
-
 const calculator = {
     valueOnDisplay: '0',
     firstOperand: null,
@@ -7,15 +6,14 @@ const calculator = {
     operator: null,
 }
 
-const updateScreenDisplay = function () {
+const updateScreenDisplay = function(){
     const calculatorScreen = document.querySelector(".calculator-screen");
     calculatorScreen.value = calculator.valueOnDisplay;
 }
 
 updateScreenDisplay();
 
-const appendDigit = function (digit) {
-
+const appendDigit = function(digit){
     const {valueOnDisplay , waitingForSecondOperand} = calculator;
 
     if(waitingForSecondOperand == true){
@@ -24,68 +22,95 @@ const appendDigit = function (digit) {
     }
 
     else{
-        if (calculator.valueOnDisplay == "0") {
+        if(valueOnDisplay == 0){
             calculator.valueOnDisplay = digit;
         }
-        else {
+    
+        else{
             calculator.valueOnDisplay = calculator.valueOnDisplay + digit;
         }
     }
 
 }
 
-const appendDot = function (dot) {
-    if (calculator.valueOnDisplay.includes(dot)) {
+const appendDot = function(dot){
+    if(calculator.valueOnDisplay.includes(dot)){
         return;
     }
-    else {
+    else{
         calculator.valueOnDisplay = calculator.valueOnDisplay + dot;
     }
 }
 
-const handleOperator = function (clickedOperator) {
+const handleOperators = function(clickedOperator){
+    const {firstOperand , valueOnDisplay , operator} = calculator;
+    const storedValue = parseFloat(calculator.valueOnDisplay);
 
-    const { firstOperand, valueOnDisplay, operator } = calculator;
-    const storedValue = parseFloat(valueOnDisplay);
-
-    if (firstOperand === null && !isNaN(storedValue)) {
+    if(firstOperand === null && !isNaN(storedValue)){
         calculator.firstOperand = storedValue;
+    }
+
+    else if(operator){
+        const result = calculate(firstOperand,storedValue,operator);
+        calculator.valueOnDisplay = String(result);
+        calculator.firstOperand = result;
     }
 
     calculator.waitingForSecondOperand = true;
     calculator.operator = clickedOperator;
+}
+
+const calculate = function(firstOperand , secondOperand , operator){
+    if(operator === '+'){
+        return firstOperand + secondOperand;
+    }
+    else if(operator === '-'){
+        return firstOperand - secondOperand;
+    }
+    else if(operator === '*'){
+        return firstOperand * secondOperand;
+    }
+    else if(operator === '/'){
+        return firstOperand / secondOperand;
+    }
+
+    return secondOperand;
 
 }
 
-const calculatorKeys = document.querySelector(".calculator-keys")
-    .addEventListener("click", (event) => {
-        const { target } = event;
+const calculatorKeys = document.querySelector(".calculator-keys");
+calculatorKeys.addEventListener("click",checkButtons);
 
-        if (!(target).matches("button")) {
-            return;
-        }
+function checkButtons(event){
+    const {target} = event;
 
-        else {
-            if (target.classList.contains("operator")) {
-                handleOperator(target.value);
-            }
-
-            else if (target.classList.contains("decimal")) {
-                appendDot(target.value);
-            }
-
-            else if (target.classList.contains("equal-sign")) {
-                console.log("I am an equal key", target.value);
-            }
-
-            else if (target.classList.contains("clear")) {
-                console.log("I am a clear key", target.value);
-            }
-
-            else {
-                appendDigit(target.value);
-            }
-
-            updateScreenDisplay();
-        }
+    Array.from(target.parentElement.children).forEach((operatorKey) => {
+        operatorKey.classList.remove("is-clicked");
     })
+
+    if(!(target.matches("button"))){
+        return;
+    }
+
+    else{
+        if(target.classList.contains("operator")){
+            handleOperators(target.value);
+            target.classList.add("is-clicked");
+        }
+        else if(target.classList.contains("decimal")){
+            appendDot(target.value);
+        }
+        else if(target.classList.contains("equal-sign")){
+            console.log('Equal key',target.value);
+        }
+        else if(target.classList.contains("clear")){
+            console.log('Clear key',target.value);
+        }
+        else{
+            appendDigit(target.value);
+        }
+
+        updateScreenDisplay();
+
+    }
+}

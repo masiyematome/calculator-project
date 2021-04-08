@@ -1,69 +1,91 @@
 
+
 const calculator = {
-    valueOnScreen : '0',
-    firstOperand : null,
-    waitingForSecondOperand : false,
-    operator : null,
+    valueOnDisplay: '0',
+    firstOperand: null,
+    waitingForSecondOperand: false,
+    operator: null,
 }
 
-function updateScreenDisplay(){
+const updateScreenDisplay = function () {
     const calculatorScreen = document.querySelector(".calculator-screen");
-    calculatorScreen.value = calculator.valueOnScreen;
+    calculatorScreen.value = calculator.valueOnDisplay;
 }
 
 updateScreenDisplay();
 
-function appendDigit(digit){
-    if(calculator.valueOnScreen == '0'){
-        calculator.valueOnScreen = digit;
+const appendDigit = function (digit) {
+
+    const {valueOnDisplay , waitingForSecondOperand} = calculator;
+
+    if(waitingForSecondOperand == true){
+        calculator.valueOnDisplay = digit;
+        calculator.waitingForSecondOperand = false;
     }
 
     else{
-        calculator.valueOnScreen = calculator.valueOnScreen + digit;
-    }
-}
-
-function appendDot(dot){
-    if(calculator.valueOnScreen.includes(dot)){
-        return;
-    }
-
-    else{
-        calculator.valueOnScreen = calculator.valueOnScreen + dot;
-    }
-}
-
-const calculatorKeys = document.querySelector(".calculator-keys").addEventListener("click" , (event) =>{
-    const {target} = event;
-
-    if(!(target.matches("button"))){
-        return;
-    }
-
-    else{
-        if(target.classList.contains("operator")){
-            console.log("I am an operator key" ,target.value);
+        if (calculator.valueOnDisplay == "0") {
+            calculator.valueOnDisplay = digit;
         }
-    
-        else if(target.classList.contains("decimal")){
-            appendDot(target.value);
-        }
-    
-        else if(target.classList.contains("equal-sign")){
-            console.log("I am an equal sign" ,target.value);
-        }
-    
-        else if(target.classList.contains("clear")){
-            console.log("I am a clear key" , target.value);
-        }
-    
         else {
-            appendDigit(target.value);
+            calculator.valueOnDisplay = calculator.valueOnDisplay + digit;
         }
-
-        updateScreenDisplay();
-
     }
 
-})
+}
 
+const appendDot = function (dot) {
+    if (calculator.valueOnDisplay.includes(dot)) {
+        return;
+    }
+    else {
+        calculator.valueOnDisplay = calculator.valueOnDisplay + dot;
+    }
+}
+
+const handleOperator = function (clickedOperator) {
+
+    const { firstOperand, valueOnDisplay, operator } = calculator;
+    const storedValue = parseFloat(valueOnDisplay);
+
+    if (firstOperand === null && !isNaN(storedValue)) {
+        calculator.firstOperand = storedValue;
+    }
+
+    calculator.waitingForSecondOperand = true;
+    calculator.operator = clickedOperator;
+
+}
+
+const calculatorKeys = document.querySelector(".calculator-keys")
+    .addEventListener("click", (event) => {
+        const { target } = event;
+
+        if (!(target).matches("button")) {
+            return;
+        }
+
+        else {
+            if (target.classList.contains("operator")) {
+                handleOperator(target.value);
+            }
+
+            else if (target.classList.contains("decimal")) {
+                appendDot(target.value);
+            }
+
+            else if (target.classList.contains("equal-sign")) {
+                console.log("I am an equal key", target.value);
+            }
+
+            else if (target.classList.contains("clear")) {
+                console.log("I am a clear key", target.value);
+            }
+
+            else {
+                appendDigit(target.value);
+            }
+
+            updateScreenDisplay();
+        }
+    })

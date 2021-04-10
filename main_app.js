@@ -49,6 +49,11 @@ const handleOperators = function(clickedOperator){
     const {firstOperand , valueOnDisplay ,operator } = calculator;
     const storedValue = parseFloat(valueOnDisplay);
 
+    if(operator && calculator.waitingForSecondOperand){
+        calculator.operator = clickedOperator;
+        return;
+    }
+
     if(firstOperand === null && !isNaN(storedValue)){
         calculator.firstOperand = storedValue;
     }
@@ -86,6 +91,15 @@ const calculate = function(firstOperand , secondOperand , operator){
     }
 }
 
+const resetCalculator = function(){
+    
+    calculator.valueOnDisplay = 0;
+    calculator.firstOperand = null;
+    calculator.waitingForSecondOperand = false;
+    calculator.operator = null;
+
+}
+
 const calculatorKeys = document.querySelector(".calculator-keys");
 calculatorKeys.addEventListener("click",(event) => {
     const {target} = event;
@@ -104,7 +118,7 @@ calculatorKeys.addEventListener("click",(event) => {
         }
         
         else if(target.classList.contains("clear")){
-            console.log("Clear key",target.value);
+            resetCalculator();
         }
 
         else{

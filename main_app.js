@@ -1,12 +1,13 @@
 
+
 const calculator = {
     valueOnDisplay: '0',
     firstOperand: null,
-    waitingForSecondOperand: false,
-    operator: null,
+    waitingForSecondOperand : false,
+    operator: null, 
 }
 
-const updateScreenDisplay = function () {
+const updateScreenDisplay = function(){
     const calculatorScreen = document.querySelector(".calculator-screen");
     calculatorScreen.value = calculator.valueOnDisplay;
 }
@@ -14,21 +15,23 @@ const updateScreenDisplay = function () {
 updateScreenDisplay();
 
 const appendDigit = function(digit){
-    const {valueOnDisplay} = calculator;
 
-    if(calculator.waitingForSecondOperand == true){
+    const {waitingForSecondOperand} = calculator;
+
+    if(waitingForSecondOperand == true){
         calculator.valueOnDisplay = digit;
         calculator.waitingForSecondOperand = false;
     }
+
     else{
-        if(valueOnDisplay == "0"){
+        if(calculator.valueOnDisplay == '0'){
             calculator.valueOnDisplay = digit;
         }
         else{
-            calculator.valueOnDisplay = valueOnDisplay + digit;
+            calculator.valueOnDisplay = calculator.valueOnDisplay + digit;
         }
     }
-
+    
 }
 
 const appendDot = function(dot){
@@ -38,18 +41,13 @@ const appendDot = function(dot){
         return;
     }
     else{
-        calculator.valueOnDisplay = valueOnDisplay + dot;
+        calculator.valueOnDisplay = calculator.valueOnDisplay + dot;
     }
 }
 
-const handleOperator = function(clickedOperator){
-    const {firstOperand , valueOnDisplay , operator} = calculator;
+const handleOperators = function(clickedOperator){
+    const {firstOperand , valueOnDisplay ,operator } = calculator;
     const storedValue = parseFloat(valueOnDisplay);
-
-    if(operator && calculator.waitingForSecondOperand == true){
-        calculator.operator = clickedOperator;
-        return;
-    }
 
     if(firstOperand === null && !isNaN(storedValue)){
         calculator.firstOperand = storedValue;
@@ -57,7 +55,7 @@ const handleOperator = function(clickedOperator){
 
     else if(operator){
         const result = calculate(firstOperand , storedValue , operator);
-        calculator.valueOnDisplay = String(result);
+        calculator.valueOnDisplay = result;
         calculator.firstOperand = result;
     }
 
@@ -67,59 +65,52 @@ const handleOperator = function(clickedOperator){
 }
 
 const calculate = function(firstOperand , secondOperand , operator){
-    if(operator == '+'){
+    if(operator === '+'){
         return firstOperand + secondOperand;
     }
-    else if(operator == '-'){
+
+    else if(operator === '-'){
         return firstOperand - secondOperand;
     }
-    else if(operator == '*'){
+
+    else if(operator === '*'){
         return firstOperand * secondOperand;
     }
-    else if(operator == '/'){
+
+    else if(operator === '/'){
         return firstOperand / secondOperand;
     }
 
-    return secondOperand;
-
+    else{
+        return secondOperand;
+    }
 }
 
 const calculatorKeys = document.querySelector(".calculator-keys");
-calculatorKeys.addEventListener("click", (event) => {
-    const { target } = event;
+calculatorKeys.addEventListener("click",(event) => {
+    const {target} = event;
 
-    if (target.matches("button")) {
+    if(!(target.matches("button"))){
+        return;
+    }
 
-        Array.from(target.parentElement.children).forEach((btn) => {
-            btn.classList.remove("is-clicked");
-        })
-
-        if (target.classList.contains("operator")) {
-            handleOperator(target.value);
-            target.classList.add("is-clicked");
+    else{
+        if(target.classList.contains("operator")){
+            handleOperators(target.value);
         }
-
-        else if (target.classList.contains("decimal")) {
+        
+        else if(target.classList.contains("decimal")){
             appendDot(target.value);
         }
-
-        else if (target.classList.contains("equal-sign")) {
-            calculate();
+        
+        else if(target.classList.contains("clear")){
+            console.log("Clear key",target.value);
         }
 
-        else if (target.classList.contains("clear")) {
-            console.log("I am a clear key", target.value);
-        }
-
-        else {
+        else{
             appendDigit(target.value);
         }
 
         updateScreenDisplay();
-
     }
-
-    else {
-        return;
-    }
-})
+});

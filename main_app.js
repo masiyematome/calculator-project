@@ -37,6 +37,12 @@ const appendDigit = function(digit){
 const appendDot = function(dot){
     const {valueOnDisplay} = calculator;
 
+    if(calculator.waitingForSecondOperand == true){
+        calculator.valueOnDisplay = "0.";
+        calculator.waitingForSecondOperand = false;
+        return;
+    }
+
     if(valueOnDisplay.includes(dot)){
         return;
     }
@@ -128,3 +134,4 @@ calculatorKeys.addEventListener("click",(event) => {
         updateScreenDisplay();
     }
 });
+

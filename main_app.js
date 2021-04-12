@@ -1,73 +1,74 @@
 
-
 const calculator = {
     valueOnDisplay: '0',
     firstOperand: null,
-    waitingForSecondOperand : false,
-    operator: null, 
+    waitingForSecondOperand: false,
+    operator: null,
 }
 
-const updateScreenDisplay = function(){
+function updateScreenDisplay() {
     const calculatorScreen = document.querySelector(".calculator-screen");
     calculatorScreen.value = calculator.valueOnDisplay;
 }
 
 updateScreenDisplay();
 
-const appendDigit = function(digit){
+function appendDigit(digit) {
+    const { valueOnDisplay, waitingForSecondOperand } = calculator;
 
-    const {waitingForSecondOperand} = calculator;
-
-    if(waitingForSecondOperand == true){
+    if (waitingForSecondOperand == true) {
         calculator.valueOnDisplay = digit;
         calculator.waitingForSecondOperand = false;
     }
 
-    else{
-        if(calculator.valueOnDisplay == '0'){
+    else {
+        if (valueOnDisplay == '0') {
             calculator.valueOnDisplay = digit;
         }
-        else{
-            calculator.valueOnDisplay = calculator.valueOnDisplay + digit;
+        else {
+            calculator.valueOnDisplay += digit;
         }
     }
-    
+
 }
 
-const appendDot = function(dot){
-    const {valueOnDisplay} = calculator;
+function appendDot(dot) {
+    const { valueOnDisplay } = calculator;
 
     if(calculator.waitingForSecondOperand == true){
-        calculator.valueOnDisplay = "0.";
+        calculator.valueOnDisplay = '0.';
         calculator.waitingForSecondOperand = false;
         return;
     }
 
-    if(valueOnDisplay.includes(dot)){
-        return;
-    }
     else{
-        calculator.valueOnDisplay = calculator.valueOnDisplay + dot;
+        if (valueOnDisplay.includes(dot)) {
+            return;
+        }
+        else {
+            calculator.valueOnDisplay += dot;
+        }
     }
+
 }
 
-const handleOperators = function(clickedOperator){
-    const {firstOperand , valueOnDisplay ,operator } = calculator;
+function handleOperators(clickedOperator) {
+    const { firstOperand, valueOnDisplay ,operator } = calculator;
     const storedValue = parseFloat(valueOnDisplay);
 
-    if(operator && calculator.waitingForSecondOperand){
+    if(operator && calculator.waitingForSecondOperand == true){
         calculator.operator = clickedOperator;
         return;
     }
 
-    if(firstOperand === null && !isNaN(storedValue)){
+    if (firstOperand === null && !isNaN(storedValue)) {
         calculator.firstOperand = storedValue;
     }
 
     else if(operator){
         const result = calculate(firstOperand , storedValue , operator);
+        calculator.firstOperand = String(result);
         calculator.valueOnDisplay = result;
-        calculator.firstOperand = result;
     }
 
     calculator.waitingForSecondOperand = true;
@@ -75,63 +76,64 @@ const handleOperators = function(clickedOperator){
 
 }
 
-const calculate = function(firstOperand , secondOperand , operator){
-    if(operator === '+'){
-        return firstOperand + secondOperand;
-    }
+function calculate(firstOperand, secondOperand, operator) {
+    switch (operator) {
+        case '+':
+            return firstOperand + secondOperand;
 
-    else if(operator === '-'){
-        return firstOperand - secondOperand;
-    }
+        case '-':
+            return firstOperand - secondOperand;
 
-    else if(operator === '*'){
-        return firstOperand * secondOperand;
-    }
+        case '*':
+            return firstOperand * secondOperand;
 
-    else if(operator === '/'){
-        return firstOperand / secondOperand;
-    }
+        case '/':
+            return firstOperand / secondOperand;
 
-    else{
-        return secondOperand;
+        default:
+            return secondOperand;
+
     }
 }
 
-const resetCalculator = function(){
-    
-    calculator.valueOnDisplay = 0;
+function clearCalculator(){
+    calculator.valueOnDisplay = '0';
     calculator.firstOperand = null;
     calculator.waitingForSecondOperand = false;
     calculator.operator = null;
-
 }
 
 const calculatorKeys = document.querySelector(".calculator-keys");
-calculatorKeys.addEventListener("click",(event) => {
-    const {target} = event;
+calculatorKeys.addEventListener("click", keys);
 
-    if(!(target.matches("button"))){
+function keys(event) {
+    const { target } = event;
+
+    if (!(target.matches("button"))) {
         return;
     }
 
-    else{
-        if(target.classList.contains("operator")){
-            handleOperators(target.value);
-        }
-        
-        else if(target.classList.contains("decimal")){
-            appendDot(target.value);
-        }
-        
-        else if(target.classList.contains("clear")){
-            resetCalculator();
-        }
+    else {
+        switch (target.classList[1]) {
+            case 'operator':
+                handleOperators(target.value);
+                break;
 
-        else{
-            appendDigit(target.value);
+            case 'decimal':
+                appendDot(target.value);
+                break;
+
+            case 'clear':
+                clearCalculator();
+                break;
+
+            case 'digit':
+                appendDigit(target.value);
+                break;
         }
 
         updateScreenDisplay();
+
     }
-});
+}
 

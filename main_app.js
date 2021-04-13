@@ -116,7 +116,11 @@ function keys(event) {
     else {
         switch (target.classList[1]) {
             case 'operator':
+                Array.from(target.parentElement.children).forEach((operatorKey) => {
+                    operatorKey.classList.remove("is-clicked");
+                })
                 handleOperators(target.value);
+                target.classList.add("is-clicked");
                 break;
 
             case 'decimal':

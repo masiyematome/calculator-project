@@ -197,8 +197,28 @@ document.onkeyup = function (event) {
             appendDigit('9');
             break;
 
+        case 106:
+            handleOperators('*');
+            break;
+
+        case 107:
+            handleOperators('+');
+            break;
+
+        case 109:
+            handleOperators('-');
+            break;
+
         case 110:
             appendDot('.');
+            break;
+
+        case 111:
+            handleOperators('/');
+            break;
+
+        case 187:
+            handleOperators('=');
             break;
 
     }
